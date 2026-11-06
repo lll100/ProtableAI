@@ -1,0 +1,50 @@
+{
+  "active_provider": "local-portableai",
+  "providers": [
+    {
+      "id": "local-portableai",
+      "name": "PortableAI 本地适配器",
+      "kind": "本地",
+      "enabled": true,
+      "base_url": "http://127.0.0.1:11436",
+      "api_format": "Anthropic Messages + OpenAI Responses",
+      "api_key": "change-me-local-key",
+      "models": [
+        "Qwen3-4B-Q4_K_M.gguf"
+      ],
+      "config_file": "config/config.json",
+      "description": "本机回环地址，经过 PortableAI 适配器转发到本地 llama.cpp。",
+      "model": "Qwen3-4B-Q4_K_M.gguf"
+    },
+    {
+      "id": "claude-local",
+      "name": "Claude Code 本地供应商",
+      "kind": "Claude Code",
+      "enabled": true,
+      "base_url": "http://127.0.0.1:11436",
+      "api_format": "Anthropic Messages",
+      "api_key": "change-me-local-key",
+      "models": [
+        "claude-sonnet-4-5-20250929"
+      ],
+      "config_file": "agents/claude-code/home/settings.json",
+      "description": "供本地 Claude Code 启动器使用的供应商配置。",
+      "model": "claude-sonnet-4-5-20250929"
+    },
+    {
+      "id": "codex-local",
+      "name": "Codex 本地供应商",
+      "kind": "Codex",
+      "enabled": true,
+      "base_url": "http://127.0.0.1:11436",
+      "api_format": "OpenAI Responses",
+      "api_key": "change-me-local-key",
+      "models": [
+        "Qwen3-4B-Q4_K_M.gguf"
+      ],
+      "config_file": "agents/codex/home/config.toml",
+      "description": "供本地 Codex 启动器使用的 Responses API 配置。",
+      "model": "Qwen3-4B-Q4_K_M.gguf"
+    }
+  ]
+}

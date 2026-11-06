@@ -1,0 +1,31 @@
+﻿{
+  "items": [
+    {
+      "name": "本地 OpenAI API",
+      "kind": "LLAMA SERVER",
+      "protocol": "OPENAI",
+      "base_url": "http://127.0.0.1:11435/v1",
+      "description": "适用于 OpenAI SDK、脚本和支持自定义 Base URL 的工具。",
+      "auth": "本机回环（无密钥）",
+      "status": "READY"
+    },
+    {
+      "name": "Claude Code 适配器",
+      "kind": "ANTHROPIC BRIDGE",
+      "protocol": "MESSAGES",
+      "base_url": "http://127.0.0.1:11436",
+      "description": "将 Anthropic Messages API 转换为本地 OpenAI Chat Completions。",
+      "auth": "x-api-key portable-local",
+      "status": "READY"
+    },
+    {
+      "name": "Codex / Responses 适配器",
+      "kind": "OPENAI BRIDGE",
+      "protocol": "RESPONSES",
+      "base_url": "http://127.0.0.1:11436",
+      "description": "为支持自定义端点的 Codex 类客户端提供 Responses API 兼容入口。",
+      "auth": "Bearer portable-local",
+      "status": "READY"
+    }
+  ]
+}

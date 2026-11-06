@@ -1,0 +1,33 @@
+# PortableAI local state and sensitive data
+logs/**
+!logs/.gitkeep
+documents/inbox/**
+documents/extracted/**
+documents/output/**
+!documents/**/.gitkeep
+
+# Large model and native runtime artifacts
+models/*
+!models/*.sha256.txt
+runtime/**
+agents/runtime/**
+agents/*/package/**
+agents/*/home/**
+
+# Machine-specific configuration and backups
+config/config.json
+config/config.json.bak
+config/providers.json
+config/providers.json.bak
+config/*.key
+*.env
+!*.env.example
+
+# Temporary and editor files
+*.pid
+*.log
+*.log.*
+*.partial
+*.tmp
+.DS_Store
+Thumbs.db

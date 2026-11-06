@@ -1,0 +1,82 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PortableAI 控制台</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-mark">PA</div><div><strong>PortableAI</strong><span>本地推理控制台</span></div></div>
+      <div class="side-label">部署流程</div>
+      <nav class="nav" aria-label="主导航">
+        <button class="nav-item active" data-view="dashboard"><span class="nav-icon">▦</span>工作台</button>
+        <button class="nav-item" data-view="environment"><span class="nav-icon">⌁</span>上游环境</button>
+        <button class="nav-item" data-view="deploy"><span class="nav-icon">⚙</span>部署配置</button>
+        <button class="nav-item" data-view="providers"><span class="nav-icon">⇄</span>下游供应商</button>
+        <button class="nav-item" data-view="monitor"><span class="nav-icon">▥</span>监控面板</button>
+        <button class="nav-item" data-view="logs"><span class="nav-icon">≡</span>日志与调试</button><a class="nav-item nav-link" href="/chat.html"><span class="nav-icon">✦</span>本地对话</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <a class="legacy-link" href="/legacy-console.html" target="_blank">↗ 打开旧版页面</a>
+        <div class="safe-badge"><span class="status-dot"></span><span>仅本机回环<br>离线安全模式</span></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div><span class="crumb">PORTABLEAI</span><span class="slash">/</span><span id="view-title">工作台</span></div>
+        <div class="topbar-right"><span id="control-health" class="health-pill pending">控制服务检测中</span><span id="clock">--:--:--</span></div>
+      </header>
+
+      <section class="view active" id="view-dashboard">
+        <div class="page-head"><div><p class="eyebrow">CONTROL ROOM</p><h1>部署工作台</h1><p class="page-desc">从上游环境检测到下游智能体连接，所有本机服务集中在这里管理。</p></div><div class="head-actions"><button class="button secondary" id="dashboard-refresh">刷新状态</button></div></div>
+        <div class="summary-grid">
+          <article class="summary-card service-summary"><div class="summary-title">模型服务</div><div class="summary-value" id="dash-service">检测中</div><div class="summary-note" id="dash-service-note">正在读取 /health</div><span class="summary-state pending" id="dash-service-state"></span></article>
+          <article class="summary-card"><div class="summary-title">当前模型</div><div class="summary-value compact" id="dash-model">—</div><div class="summary-note" id="dash-model-note">—</div></article>
+          <article class="summary-card"><div class="summary-title">推理后端</div><div class="summary-value" id="dash-backend">—</div><div class="summary-note" id="dash-backend-note">配置：—</div></article>
+          <article class="summary-card"><div class="summary-title">内存占用</div><div class="summary-value" id="dash-memory">—</div><div class="summary-note" id="dash-memory-note">系统 —</div></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel"><div class="panel-head"><div><p class="eyebrow">DEPLOYMENT DETAIL</p><h2>部署详细信息</h2></div><span class="panel-status" id="dash-last-refresh">—</span></div><div class="detail-table"><div><span>控制台地址</span><code id="dash-control-url">http://127.0.0.1:11434</code></div><div><span>模型服务</span><code id="dash-model-url">http://127.0.0.1:11435</code></div><div><span>Claude / Codex 适配器</span><code id="dash-agent-url">http://127.0.0.1:11436</code></div><div><span>上下文 / 最大输出</span><strong id="dash-context">—</strong></div><div><span>进程 PID / 运行时间</span><strong id="dash-process">—</strong></div><div><span>当前供应商</span><strong id="dash-provider">—</strong></div></div></article>
+          <article class="panel quick-panel"><div class="panel-head"><div><p class="eyebrow">QUICK ACTIONS</p><h2>服务操作</h2></div></div><p class="panel-desc">启动脚本会同时管理模型服务、控制台和 Claude/Codex API 适配器。</p><div class="button-stack"><button class="button primary" data-action="start">启动部署</button><button class="button secondary" data-action="restart">重启模型服务</button><button class="button danger" data-action="stop">停止模型服务</button></div><p class="action-hint" id="dash-action-hint">执行操作后会在弹窗中显示结果和错误原因。</p></article>
+        </div>
+        <article class="panel activity-panel"><div class="panel-head"><div><p class="eyebrow">LATEST LOG</p><h2>最近启动进度</h2></div><button class="text-button" data-view-link="logs">查看日志</button></div><div id="dash-log-lines" class="log-lines"><span class="muted">暂无日志</span></div></article>
+      </section>
+
+      <section class="view" id="view-environment">
+        <div class="page-head"><div><p class="eyebrow">UPSTREAM / ENVIRONMENT</p><h1>上游环境</h1><p class="page-desc">先确认这台轻薄本能提供哪些运行时、显卡和模型，再决定部署参数。</p></div><div class="head-actions"><button class="button primary" id="scan-environment">重新检测环境</button></div></div>
+        <div class="environment-grid" id="environment-cards"></div>
+        <div class="two-column"><article class="panel"><div class="panel-head"><div><p class="eyebrow">RUNTIMES</p><h2>可用推理后端</h2></div><span class="recommendation" id="recommended-backend">推荐：—</span></div><div id="runtime-table" class="runtime-table"></div></article><article class="panel"><div class="panel-head"><div><p class="eyebrow">MODELS</p><h2>模型文件</h2></div></div><div id="model-table" class="model-table"></div></article></div>
+      </section>
+
+      <section class="view" id="view-deploy">
+        <div class="page-head"><div><p class="eyebrow">UPSTREAM / DEPLOYMENT</p><h1>部署配置</h1><p class="page-desc">选择模型、推理后端和资源参数。保存后可按需重启模型服务。</p></div><div class="head-actions"><span class="save-state" id="config-state">未同步</span></div></div>
+        <div class="two-column deploy-layout"><form class="panel form-panel" id="config-form"><div class="panel-head"><div><p class="eyebrow">RUNTIME CONFIG</p><h2>推理参数</h2></div></div><div class="form-grid"><label class="field wide"><span>模型文件</span><select id="cfg-model"></select><small>模型必须位于 F:\PortableAI\models。</small></label><label class="field"><span>部署 / 推理后端</span><select id="cfg-backend"><option value="auto">自动选择（GPU → CPU）</option><option value="cuda">CUDA</option><option value="vulkan">Vulkan</option><option value="cpu">CPU</option></select><small>不可用时会在日志中说明。</small></label><label class="field"><span>模型服务端口</span><input id="cfg-port" type="number" min="1024" max="65535"><small>默认 11435。</small></label><label class="field"><span>上下文窗口</span><input id="cfg-context" type="number" min="512" max="131072" step="512"><small>文档和历史对话共用。</small></label><label class="field"><span>最大输出 tokens</span><input id="cfg-max-tokens" type="number" min="64" max="16384" step="64"></label><label class="field"><span>温度</span><input id="cfg-temperature" type="number" min="0" max="2" step="0.05"></label><label class="field"><span>CPU 线程</span><input id="cfg-threads" type="number" min="0" max="128"><small>0 表示自动选择。</small></label><label class="field"><span>GPU 层数</span><input id="cfg-gpu-layers" type="number" min="-1" max="256"><small>-1 表示尽可能卸载。</small></label><label class="field"><span>启动等待上限（秒）</span><input id="cfg-timeout" type="number" min="30" max="900" step="30"></label><label class="field"><span>思考模式</span><select id="cfg-reasoning"><option value="off">关闭</option><option value="on">开启</option><option value="auto">自动</option></select></label></div><div class="toggle-row"><label><input id="cfg-prefer-gpu" type="checkbox"><span>自动模式优先 GPU</span></label><label><input id="cfg-auto-fallback" type="checkbox"><span>GPU 失败自动回退 CPU</span></label><label><input id="cfg-metrics" type="checkbox"><span>启用性能指标</span></label></div><div class="form-actions"><button class="button secondary" type="button" id="config-reset">恢复已保存值</button><button class="button primary" type="submit">保存配置</button><button class="button accent" type="button" id="config-apply">保存并重启</button></div></form><aside class="panel explain-panel"><div class="panel-head"><div><p class="eyebrow">HOW IT WORKS</p><h2>参数关系</h2></div></div><div class="explain-list"><div><b>1. 后端</b><p>auto 会按显卡和运行时选择；明确选择后，启动日志会记录是否可用。</p></div><div><b>2. 上下文</b><p>context 越大能放入的文档越多，也会增加显存或内存压力。</p></div><div><b>3. 回退</b><p>开启回退后，GPU 启动失败会继续尝试 CPU，失败原因会写入 service_error.log。</p></div></div></aside></div>
+      </section>
+
+      <section class="view" id="view-providers">
+        <div class="page-head"><div><p class="eyebrow">DOWNSTREAM / AGENTS</p><h1>下游供应商</h1><p class="page-desc">把本地模型包装成 Claude Code、Codex 或自定义 OpenAI/Anthropic 供应商，并支持多个配置切换。</p></div><div class="head-actions"><button class="button primary" id="provider-new">新增供应商</button><button class="button secondary" id="provider-save">保存供应商</button></div></div>
+        <div class="provider-layout"><article class="panel provider-list-panel"><div class="panel-head"><div><p class="eyebrow">PROVIDERS</p><h2>供应商列表</h2></div><span class="panel-status" id="provider-count">0 个</span></div><div id="provider-list" class="provider-list"></div></article><form class="panel provider-editor" id="provider-form"><div class="panel-head"><div><p class="eyebrow">PROVIDER DETAIL</p><h2 id="provider-editor-title">选择供应商</h2></div><span class="active-mark" id="provider-active-mark">未选择</span></div><div class="form-grid"><label class="field"><span>ID</span><input id="provider-id" required pattern="[a-zA-Z0-9._-]+"><small>保存后建议保持不变。</small></label><label class="field"><span>名称</span><input id="provider-name" required></label><label class="field"><span>类型</span><select id="provider-kind"><option>本地</option><option>Claude Code</option><option>Codex</option><option>OpenAI</option><option>Anthropic</option><option>自定义</option></select></label><label class="field"><span>API 格式</span><select id="provider-format"><option>OpenAI Chat Completions</option><option>OpenAI Responses</option><option>Anthropic Messages</option><option>Anthropic Messages + OpenAI Responses</option><option>自定义</option></select></label><label class="field wide"><span>请求网址</span><input id="provider-url" type="url" placeholder="http://127.0.0.1:11436" required><small>测试时会请求对应地址的 /v1/models。</small></label><label class="field wide"><span>API Key</span><input id="provider-key" type="password" autocomplete="off"><small>只写入 F:\PortableAI\config\providers.json。</small></label><label class="field wide"><span>模型列表（每行一个）</span><textarea id="provider-models" rows="4"></textarea></label><label class="field wide"><span>默认模型</span><select id="provider-model"><option value="">未选择</option></select><small>点击“获取模型”后可在列表中选择默认模型。</small></label><label class="field wide"><span>配置文件路径</span><input id="provider-config-file" placeholder="agents/codex/home/config.toml"><small>相对 F:\PortableAI 的路径，可在下方读取或保存内容。</small></label><label class="field wide"><span>配置文件内容</span><textarea id="provider-config-content" rows="8" placeholder="点击“读取配置文件”载入内容"></textarea><small>只允许写入 PortableAI 根目录内的文本配置文件。</small></label><label class="field wide"><span>说明</span><textarea id="provider-description" rows="3"></textarea></label></div><div class="provider-actions"><label class="check-label"><input id="provider-enabled" type="checkbox"><span>启用供应商</span></label><button class="button secondary" type="button" id="provider-test">测试连接</button><button class="button secondary" type="button" id="provider-models-fetch">获取模型</button><button class="button secondary" type="button" id="provider-file-view">读取配置文件</button><button class="button secondary" type="button" id="provider-file-save">保存文件内容</button><button class="button accent" type="button" id="provider-set-active">设为当前供应商</button></div></form></div>
+      </section>
+
+      <section class="view" id="view-monitor">
+        <div class="page-head"><div><p class="eyebrow">OBSERVABILITY / MONITOR</p><h1>监控面板</h1><p class="page-desc">每 3 秒采样一次，观察电脑性能、模型服务和 token 吞吐。</p></div><div class="head-actions"><span class="live-indicator"><i></i>自动采样</span></div></div>
+        <div class="monitor-cards"><article class="metric-card"><span>CPU 使用率</span><strong id="monitor-cpu">—</strong><small>系统平均</small></article><article class="metric-card"><span>内存使用率</span><strong id="monitor-memory">—</strong><small id="monitor-memory-note">—</small></article><article class="metric-card"><span>模型进程内存</span><strong id="monitor-process-memory">—</strong><small>工作集</small></article><article class="metric-card"><span>生成吞吐</span><strong id="monitor-tokens">—</strong><small id="monitor-tokens-note">token / s</small></article><article class="metric-card"><span>活动请求</span><strong id="monitor-requests">—</strong><small>requests_processing</small></article><article class="metric-card"><span>服务运行时间</span><strong id="monitor-uptime">—</strong><small id="monitor-backend">后端 —</small></article></div>
+        <div class="charts-grid"><article class="panel chart-panel"><div class="panel-head"><div><p class="eyebrow">SYSTEM</p><h2>CPU / 内存</h2></div><span class="chart-legend"><i class="cpu-dot"></i>CPU <i class="memory-dot"></i>内存</span></div><canvas id="system-chart" width="900" height="260"></canvas></article><article class="panel chart-panel"><div class="panel-head"><div><p class="eyebrow">TOKENS</p><h2>吞吐趋势</h2></div><span class="chart-legend"><i class="token-dot"></i>生成 <i class="prompt-dot"></i>输入</span></div><canvas id="token-chart" width="900" height="260"></canvas></article></div>
+        <article class="panel model-info-panel"><div class="panel-head"><div><p class="eyebrow">MODEL INFO</p><h2>当前模型信息</h2></div></div><div class="model-info-grid"><div><span>模型</span><strong id="monitor-model">—</strong></div><div><span>后端</span><strong id="monitor-model-backend">—</strong></div><div><span>上下文</span><strong id="monitor-model-context">—</strong></div><div><span>最大输出</span><strong id="monitor-model-max">—</strong></div><div><span>模型文件大小</span><strong id="monitor-model-size">—</strong></div><div><span>指标接口</span><strong id="monitor-metrics-enabled">—</strong></div></div></article>
+      </section>
+
+      <section class="view" id="view-logs">
+        <div class="page-head"><div><p class="eyebrow">OBSERVABILITY / DEBUG</p><h1>日志与调试</h1><p class="page-desc">保留启动过程、服务异常和适配器日志，错误弹窗会提示具体原因，日志用于进一步定位。</p></div><div class="head-actions"><button class="button secondary" id="logs-refresh">刷新日志</button></div></div>
+        <article class="panel logs-panel"><div class="log-toolbar"><label>日志源<select id="log-source"><option value="startup">startup.log / 启动进度</option><option value="service_error">service_error.log / 服务失败</option><option value="server_cpu_error">server-cpu-error.log / CPU</option><option value="server_vulkan_error">server-vulkan-error.log / Vulkan</option><option value="server_cuda_error">server-cuda-error.log / CUDA</option><option value="control">control.log / 控制台</option><option value="gateway">anthropic-gateway.log / 适配器</option></select></label><label>显示行数<select id="log-tail"><option>80</option><option>200</option><option>500</option></select></label><span id="log-file-label" class="panel-status">—</span></div><pre id="log-viewer" class="log-viewer">选择日志后加载…</pre></article>
+      </section>
+    </main>
+  </div>
+
+  <div id="modal" class="modal" hidden><div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-head"><span id="modal-icon" class="modal-icon">i</span><div><h2 id="modal-title">提示</h2><p id="modal-message"></p></div><button id="modal-close" class="modal-close" aria-label="关闭">×</button></div><pre id="modal-detail" hidden></pre><div class="modal-actions"><button id="modal-ok" class="button primary">知道了</button></div></div></div>
+  <script src="/app.js"></script>
+</body>
+</html>

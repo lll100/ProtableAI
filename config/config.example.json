@@ -1,0 +1,18 @@
+{
+  "model": "Qwen3-4B-Q4_K_M.gguf",
+  "backend": "auto",
+  "context": 40960,
+  "max_tokens": 2048,
+  "port": 11435,
+  "control_port": 11434,
+  "anthropic_port": 11436,
+  "metrics": true,
+  "agent_api_key": "change-me-local-key",
+  "prefer_gpu": true,
+  "threads": 0,
+  "gpu_layers": -1,
+  "reasoning": "off",
+  "startup_timeout_sec": 180,
+  "auto_cpu_fallback": true,
+  "temperature": 0.2
+}

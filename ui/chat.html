@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PortableAI 本地对话</title>
+  <link rel="stylesheet" href="/chat.css">
+</head>
+<body>
+  <main class="chat-shell">
+    <header class="chat-topbar">
+      <div class="brand"><div class="brand-mark">PA</div><div><strong>PortableAI</strong><span>本地对话</span></div></div>
+      <div class="top-actions"><span id="service-status" class="status-pill pending">检测中</span><a href="/" class="back-link">返回控制台</a></div>
+    </header>
+    <section class="chat-layout">
+      <aside class="chat-settings">
+        <div class="section-label">会话设置</div>
+        <label>模型<select id="model-select"></select></label>
+        <label>系统提示词<textarea id="system-prompt" rows="7" placeholder="可选，例如：你是一个严谨的本地文档助手。"></textarea></label>
+        <div class="setting-note"><span>本地地址</span><code>127.0.0.1</code><span>当前后端</span><strong id="backend-label">—</strong></div>
+        <div class="settings-actions"><button id="clear-chat" class="button secondary">清空会话</button><button id="export-chat" class="button secondary">导出记录</button></div>
+        <p class="privacy-note">对话通过 F 盘本地模型处理，不发送到 OpenAI 云端。模型服务停止时会显示具体错误原因。</p>
+      </aside>
+      <section class="chat-panel">
+        <div id="messages" class="messages"><div class="welcome"><div class="welcome-icon">✦</div><h1>开始本地对话</h1><p>当前消息会发送给 F 盘上的 Qwen 模型。你可以询问文档、代码或部署问题。</p><div class="suggestions"><button data-prompt="解释一下当前 PortableAI 的部署结构">解释部署结构</button><button data-prompt="帮我检查一段 PowerShell 代码">检查 PowerShell</button><button data-prompt="用三句话总结本地推理的流程">总结推理流程</button></div></div></div>
+        <form id="composer" class="composer"><textarea id="prompt" rows="3" placeholder="输入问题，按 Ctrl+Enter 发送"></textarea><div class="composer-bottom"><span id="token-note">等待输入</span><button class="button primary" type="submit" id="send-button">发送</button></div></form>
+      </section>
+    </section>
+  </main>
+  <div id="modal" class="modal" hidden><div class="modal-card" role="dialog" aria-modal="true"><div class="modal-head"><span id="modal-icon" class="modal-icon">!</span><div><h2 id="modal-title">操作失败</h2><p id="modal-message"></p></div><button id="modal-close" class="modal-close">×</button></div><pre id="modal-detail" hidden></pre><div class="modal-actions"><button id="modal-ok" class="button primary">知道了</button></div></div></div>
+  <script src="/chat.js"></script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+
+Algorithm       Hash                                                                   Path                            
+---------       ----                                                                   ----                            
+SHA256          7485FE6F11AF29433BC51CAB58009521F205840F5B4AE3A32FA7F92E8534FDF5       F:\PortableAI\models\Qwen3-4B...
+
+
